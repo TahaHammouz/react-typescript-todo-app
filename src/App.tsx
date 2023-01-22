@@ -1,34 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import {
+  ToDoList,
+  AddToDo,
+  SearchTodo,
+  ToDoFooter,
+  Header,
+} from "./components/index";
+import React, { useState } from "react";
+import "./App.css";
+import { Todo } from "./components/models/models";
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [hideDone, setHideDone] = useState<boolean>(false);
+  const handleAddTodo = (todo: string) => {
+    setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
+  };
+  const filteredTodos = todos
+    .filter((todo) => todo.todo.includes(searchQuery))
+    .filter((todo) => !(hideDone && todo.isDone));
 
-function App() {
-  const [count, setCount] = useState(0)
+  const handleToggleTodo = (id: number) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, done: !todo.isDone };
+        }
+        return todo;
+      })
+    );
+  };
+  const handleSearchTodo = (query: string) => {
+    setSearchQuery(query);
+  };
+  const handleToggleHideDone = () => {
+    setHideDone(!hideDone);
+  };
+  const handleDeleteTodo = (idToDelete: number) =>
+    setTodos((currentTodos) =>
+      currentTodos.filter((todo) => todo.id !== idToDelete)
+    );
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="wrapper">
+      <Header />
+      <main className="content">
+        <AddToDo onAddTodo={handleAddTodo} />
+        <SearchTodo onSearchTodo={handleSearchTodo} />
+        <button onClick={handleToggleHideDone} className="ToggleHideDonebtn">
+          {hideDone ? "Show" : "Hide"} Done
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+        <ToDoList
+          onDelete={handleDeleteTodo}
+          todos={filteredTodos}
+          onToggleTodo={handleToggleTodo}
+        />
 
-export default App
+        <ToDoFooter todos={filteredTodos} />
+      </main>
+    </div>
+  );
+};
+
+export default App;
