@@ -5,7 +5,7 @@ interface Props {
   onToggleTodo: (id: number) => void;
   onDeleteHandler: (id: number) => void;
 }
-const Task: React.FC<Props> = ({ todo, onToggleTodo,onDeleteHandler }) => {
+const Task: React.FC<Props> = ({ todo, onToggleTodo, onDeleteHandler }) => {
   return (
     <>
       <input
@@ -17,6 +17,7 @@ const Task: React.FC<Props> = ({ todo, onToggleTodo,onDeleteHandler }) => {
         className={styles.graphic}
         aria-label={"Toggle Todo"}
       />
+
       <label htmlFor={todo.id.toString()} className={styles.content}>
         <span
           style={{
@@ -27,7 +28,10 @@ const Task: React.FC<Props> = ({ todo, onToggleTodo,onDeleteHandler }) => {
         </span>
       </label>
 
-      <button className={styles.deleteButton} onClick={() => onDeleteHandler(todo.id)}>
+      <button
+        className={styles.deleteButton}
+        onClick={() => onDeleteHandler(todo.id)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

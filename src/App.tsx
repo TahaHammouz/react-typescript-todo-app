@@ -23,7 +23,7 @@ const App: React.FC = () => {
     setTodos(
       todos.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, done: !todo.isDone };
+          return { ...todo, isDone: !todo.isDone };
         }
         return todo;
       })
