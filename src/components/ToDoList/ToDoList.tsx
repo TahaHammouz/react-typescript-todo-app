@@ -3,19 +3,19 @@ import styles from "./ToDoList.module.css";
 import { Todo } from "../models/models";
 
 interface ToDoListProps  {
-  todo: Todo[];
+  filteredTodos: Todo[];
   onDelete: (id: number) => void;
   onToggleTodo: (id: number) => void;
 };
 
 const ToDoList: React.FC<ToDoListProps> = ({
-  todo,
+  filteredTodos,
   onDelete,
   onToggleTodo,
 }) => {
   return (
     <ul className={styles.list}>
-      {todo.map((todo) => (
+      {filteredTodos.map((todo) => (
         <li key={todo.id} className={styles.task}>
           <Task onDeleteHandler={onDelete} todo={todo} onToggleTodo={onToggleTodo} />
         </li>

@@ -51,11 +51,11 @@ const App: React.FC = () => {
         </button>
         <ToDoList
           onDelete={handleDeleteTodo}
-          todos={filteredTodos}
+          filteredTodos={filteredTodos}
           onToggleTodo={handleToggleTodo}
         />
 
-        <ToDoFooter todos={filteredTodos} />
+        <ToDoFooter filteredTodos={filteredTodos} />
       </main>
     </div>
   );
