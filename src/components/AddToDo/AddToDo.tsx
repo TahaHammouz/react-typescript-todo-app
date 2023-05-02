@@ -11,6 +11,7 @@ const AddToDo:React.FC<Props> = ({onAddTodo}) => {
     event.preventDefault();
     if (newTodo.trim() !== '') {
       onAddTodo(newTodo);
+      localStorage.setItem("todos", JSON.stringify(newTodo));
       setNewTodo('');
     }
   };

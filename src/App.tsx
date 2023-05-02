@@ -5,13 +5,18 @@ import {
   ToDoFooter,
   Header,
 } from "./components/index";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Todo } from "./components/models/models";
+
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const storedTodos = localStorage.getItem("todos");
+    return storedTodos ? JSON.parse(storedTodos) : [];
+  });
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [hideDone, setHideDone] = useState<boolean>(false);
+
   const handleAddTodo = (todo: string) => {
     setTodos([...todos, { id: Date.now(), todo, isDone: false }]);
   };
@@ -40,6 +45,10 @@ const App: React.FC = () => {
       currentTodos.filter((todo) => todo.id !== idToDelete)
     );
 
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   return (
     <div className="wrapper">
       <Header />
@@ -54,7 +63,6 @@ const App: React.FC = () => {
           filteredTodos={filteredTodos}
           onToggleTodo={handleToggleTodo}
         />
-
         <ToDoFooter filteredTodos={filteredTodos} />
       </main>
     </div>
